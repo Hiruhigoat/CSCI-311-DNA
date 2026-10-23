@@ -31,10 +31,20 @@ public class NeedlemanWunsch {
         this.scoringGrid =  new int[s.getSequenceLength() + 1][t.getSequenceLength() + 1];
 
         makeGrid(s, t);
-        score = getScore();
+        setScore();
         getBestAlignment();
     }
 
+    public String getSeqString()
+    {
+        return allignedSequenceS;
+    }
+
+    public String getTargetString()
+    {
+        return allignedSequenceT;
+    }
+    
     private void getBestAlignment()
     {
         int i = s.getSequenceLength();
@@ -67,9 +77,14 @@ public class NeedlemanWunsch {
         this.allignedSequenceT = stringSequenceT.reverse().toString();
     }
 
-    private int getScore()
+    public int getScore()
     {
-        return scoringGrid[s.getSequenceLength()][t.getSequenceLength()];
+        return score;
+    }
+
+    private void setScore()
+    {
+        this.score = scoringGrid[s.getSequenceLength()][t.getSequenceLength()];
     }
 
     private void makeGrid(DNASequence s, DNASequence t)

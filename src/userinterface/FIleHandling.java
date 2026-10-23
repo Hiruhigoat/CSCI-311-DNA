@@ -51,4 +51,35 @@ public class FileHandling {
         // return the list of sequnces
         return sequences;
     } 
+
+
+    public static DNASequence readTargetFile(String filePath) {
+        
+        DNASequence sequence = new DNASequence("", "");
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            StringBuilder currSequence = new StringBuilder();
+
+            // While there are lines left do:
+            while ((line = bufferedReader.readLine()) != null) {
+                // Trim and skip blanks
+                line = line.trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                
+                currSequence.append(line.toUpperCase());
+            }
+
+            sequence.setHeader("Target DNA");
+            sequence.setSequence(currSequence.toString());
+            
+        } catch (IOException e) {
+            System.err.println("error in reading file " + e.getMessage());
+        }
+        // return the list of sequnces
+
+        return sequence;
+    } 
 }
