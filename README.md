@@ -18,7 +18,7 @@ DNA are long strings of genetic information. Given a new dna sequence if it is c
 Clone from the repo from https://github.com/Hiruhigoat/CSCI-311-DNA.git
 
 ```bash
-git clone [https://github.com/Hiruhigoat/CSCI-311-DNA.git](https://github.com/Hiruhigoat/CSCI-311-DNA.git)
+git clone https://github.com/Hiruhigoat/CSCI-311-DNA.git
 cd CSCI-311-DNA
 ```
 
@@ -30,7 +30,9 @@ Linux:
 ```
 
 Windows:
-./run.bat
+```cmd
+.\run.bat
+```
 
 Mac:
 Buy another computer and see above
