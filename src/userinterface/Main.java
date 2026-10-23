@@ -8,13 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.List;
 
+import algorithms.EditDistance;
 import algorithms.NeedlemanWunsch;
 
 
@@ -106,7 +106,20 @@ public class Main extends Application{
                         break;
                     }
                 case "Edit Distance":
-                    break;
+                    {
+                        double maxSim = -Double.MAX_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            double sim = EditDistance.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
+                            if (sim > maxSim) {
+                                maxSim = sim;
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(dnaSequence.getSequence());
+                            }
+                        }
+                        targetAlignment = targetDnaSequence.getSequence();
+                        sequenceAlignment = bestDnaSequence.getSequence();
+                        break;
+                    }
                 case "Longest Common Subsequence (LCS)":
                     break;
                 case "Longest Common Substring":
