@@ -54,18 +54,19 @@ set "PATH=%CD%\lib\jdk\bin;%PATH%"
 :JDK_FOUND
 echo [+] JDK detected!
 
-:: 6. Auto-fetch JavaFX SDK
+:: 6. Auto-fetch JavaFX SDK if missing
 set JAVAFX_LIB=lib\javafx-windows\lib
 if exist "%JAVAFX_LIB%" goto BUILD
 
 echo [!] Downloading JavaFX SDK for Windows...
+if not exist lib mkdir lib
 powershell -Command "Invoke-WebRequest -Uri 'https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_windows-x64_bin-sdk.zip' -OutFile 'lib\openjfx.zip'"
 powershell -Command "Expand-Archive -Path 'lib\openjfx.zip' -DestinationPath 'lib\'"
 ren lib\javafx-sdk-17.0.10 javafx-windows
-del lib\openjfx.zip
+if exist lib\openjfx.zip del lib\openjfx.zip
 
 :BUILD
-:: Clean and build
+:: Clean and prepare output directories
 if exist bin rmdir /s /q bin
 mkdir bin
 
@@ -74,13 +75,18 @@ if exist src\assets (
     xcopy /s /e /y src\assets bin\assets\ >nul
 )
 
-echo [+] Compiling Java source files...
-javac -d bin --module-path "%JAVAFX_LIB%" --add-modules javafx.controls src\userinterface\*.java src\algorithms\*.java src\*.java
+:: Dynamically list all .java files under src\ recursively
+dir /s /b src\*.java > sources.txt
 
-if %ERRORLEVEL% EQU 0 (
+echo [+] Compiling Java source files...
+javac -d bin --module-path "%JAVAFX_LIB%" --add-modules javafx.controls @sources.txt
+set COMPILE_STATUS=%ERRORLEVEL%
+if exist sources.txt del sources.txt
+
+if %COMPILE_STATUS% EQU 0 (
     echo [+] Build Successful! Launching Application...
     java -cp bin --module-path "%JAVAFX_LIB%" --add-modules javafx.controls userinterface.Launcher
 ) else (
-    echo [-] Compilation failed.
+    echo [-] Compilation failed. Check syntax errors above.
     pause
 )
