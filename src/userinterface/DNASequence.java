@@ -17,6 +17,11 @@ public class DNASequence {
     public String getSequence() {
         return sequence;
     }
+
+    public int getSequenceLength()
+    {
+        return sequence.length();
+    }
  
     @Override
     public String toString() {
