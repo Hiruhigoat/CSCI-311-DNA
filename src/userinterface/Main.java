@@ -24,6 +24,7 @@ import javafx.scene.control.TextArea;
 import algorithms.EditDistance;
 import algorithms.LCS;
 import algorithms.NeedlemanWunsch;
+import algorithms.LongestCommonSubstring;
 
 
 public class Main extends Application{
@@ -282,7 +283,20 @@ public class Main extends Application{
                         break;
                     }
                 case "Longest Common Substring":
-                    break;
+                    {
+                        double maxSim = -Double.MAX_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            double sim = LongestCommonSubstring.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
+                            if (sim > maxSim) {
+                                maxSim = sim;
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(LongestCommonSubstring.substringString(dnaSequence.getSequence(), targetDnaSequence.getSequence()));
+                            }
+                        }
+                        targetAlignment = targetDnaSequence.getSequence();
+                        sequenceAlignment = bestDnaSequence.getSequence();
+                        break;
+                    }
             }
             
             lblResultHeader.setText("Best Match: " + bestDnaSequence.getHeader());
