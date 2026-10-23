@@ -26,7 +26,7 @@ import algorithms.LCS;
 import algorithms.NeedlemanWunsch;
 import algorithms.LongestCommonSubstring;
 
-
+//I Used Ai to help make the ui cause i am not familiar with javafx i still understand it it ofc and didn't just copy paste but it is ai core so u know in advance. 
 public class Main extends Application{
 
     private File targetFile;
