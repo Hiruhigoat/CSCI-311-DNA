@@ -25,7 +25,9 @@ cd CSCI-311-DNA
 ### Executing program
 
 Linux:
+```bash
 ./run.sh
+```
 
 Windows:
 ./run.bat
