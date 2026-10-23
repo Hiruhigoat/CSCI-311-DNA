@@ -1,8 +1,11 @@
 @echo off
 title DNA Sequence Alignment Studio - Windows Build
-echo ==================================================
-echo   DNA Sequence Alignment Studio - Windows Build
-echo ==================================================
+where javac >nul 2>nul
+if %ERRORLEVEL% NEQ 0 (
+    for /d %%I in ("C:\Program Files\Eclipse Adoptium\jdk*") do set "JAVA_HOME=%%I"
+    for /d %%I in ("C:\Program Files\Java\jdk*") do set "JAVA_HOME=%%I"
+)
+if defined JAVA_HOME set "PATH=%JAVA_HOME%\bin;%PATH%"
 
 :: Clean and create bin
 if exist bin rmdir /s /q bin
