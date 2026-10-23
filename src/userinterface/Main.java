@@ -158,154 +158,154 @@ public class Main extends Application{
             "-fx-cursor: hand;"
         );
         Label lblResultHeader = new Label("Best Match:");
-    lblResultHeader.setStyle("-fx-text-fill: #34d399; -fx-font-size: 14px; -fx-font-weight: bold;");
-    lblResultHeader.setWrapText(true);
+        lblResultHeader.setStyle("-fx-text-fill: #34d399; -fx-font-size: 14px; -fx-font-weight: bold;");
+        lblResultHeader.setWrapText(true);
 
-    TextArea targetArea = new TextArea();
-    targetArea.setEditable(false);
-    targetArea.setWrapText(true);
-    targetArea.setPrefRowCount(4);
-    targetArea.setPromptText("Target alignment sequence");
-    targetArea.setStyle(
-        "-fx-control-inner-background: #0f172a; " +
-        "-fx-text-fill: #e2e8f0; " +
-        "-fx-font-family: 'Courier New', monospace;" +
-        "-fx-font-size: 20px;"
-    );
+        TextArea targetArea = new TextArea();
+        targetArea.setEditable(false);
+        targetArea.setWrapText(true);
+        targetArea.setPrefRowCount(4);
+        targetArea.setPromptText("Target alignment sequence");
+        targetArea.setStyle(
+            "-fx-control-inner-background: #0f172a; " +
+            "-fx-text-fill: #e2e8f0; " +
+            "-fx-font-family: 'Courier New', monospace;" +
+            "-fx-font-size: 20px;"
+        );
 
-    TextArea sequenceArea = new TextArea();
-    sequenceArea.setEditable(false);
-    sequenceArea.setWrapText(true);
-    sequenceArea.setPrefRowCount(4);
-    sequenceArea.setPromptText("Matched sequence alignment");
-    sequenceArea.setStyle(
-        "-fx-control-inner-background: #0f172a; " +
-        "-fx-text-fill: #e2e8f0; " +
-        "-fx-font-family: 'Courier New', monospace;" +
-        "-fx-font-size: 20px;"
-    );
+        TextArea sequenceArea = new TextArea();
+        sequenceArea.setEditable(false);
+        sequenceArea.setWrapText(true);
+        sequenceArea.setPrefRowCount(4);
+        sequenceArea.setPromptText("Matched sequence alignment");
+        sequenceArea.setStyle(
+            "-fx-control-inner-background: #0f172a; " +
+            "-fx-text-fill: #e2e8f0; " +
+            "-fx-font-family: 'Courier New', monospace;" +
+            "-fx-font-size: 20px;"
+        );
 
-    Label lblTargetTitle = new Label("Target Alignment:");
-    lblTargetTitle.setStyle("-fx-text-fill: #38bdf8; -fx-font-weight: bold;");
+        Label lblTargetTitle = new Label("Target Alignment:");
+        lblTargetTitle.setStyle("-fx-text-fill: #38bdf8; -fx-font-weight: bold;");
 
-    Label lblSeqTitle = new Label("Best Match Sequence Alignment:");
-    lblSeqTitle.setStyle("-fx-text-fill: #38bdf8; -fx-font-weight: bold;");
+        Label lblSeqTitle = new Label("Best Match Sequence Alignment:");
+        lblSeqTitle.setStyle("-fx-text-fill: #38bdf8; -fx-font-weight: bold;");
 
-    VBox resultsBox = new VBox(8, 
-        lblResultHeader, 
-        lblTargetTitle, 
-        targetArea, 
-        lblSeqTitle, 
-        sequenceArea
-    );
-    resultsBox.setPadding(new Insets(15));
-    resultsBox.setStyle("-fx-background-color: #1e293b; -fx-background-radius: 10;");
+        VBox resultsBox = new VBox(8, 
+            lblResultHeader, 
+            lblTargetTitle, 
+            targetArea, 
+            lblSeqTitle, 
+            sequenceArea
+        );
+        resultsBox.setPadding(new Insets(15));
+        resultsBox.setStyle("-fx-background-color: #1e293b; -fx-background-radius: 10;");
 
-    btnRun.setOnAction(e -> {
-        if (targetFile == null || sequencesFile == null) {
-            statusLabel.setText("Select both files before proceeding.");
-            return;
-        } 
+        btnRun.setOnAction(e -> {
+            if (targetFile == null || sequencesFile == null) {
+                statusLabel.setText("Select both files before proceeding.");
+                return;
+            } 
 
-        DNASequence targetDnaSequence = FileHandling.readTargetFile(targetFile.getAbsolutePath());
-        List<DNASequence> sequences = FileHandling.readFile(sequencesFile.getAbsolutePath());;
-        DNASequence bestDnaSequence = new DNASequence("N/A", "N/A");
-        String targetAlignment = "";
-        String sequenceAlignment = "";
+            DNASequence targetDnaSequence = FileHandling.readTargetFile(targetFile.getAbsolutePath());
+            List<DNASequence> sequences = FileHandling.readFile(sequencesFile.getAbsolutePath());;
+            DNASequence bestDnaSequence = new DNASequence("N/A", "N/A");
+            String targetAlignment = "";
+            String sequenceAlignment = "";
 
 
 
-        switch (algorithmPicker.getValue()) 
-        {
-            case "Needleman-Wunsch":
-                {
-                    int maxScore = Integer.MIN_VALUE;
-                    for (DNASequence dnaSequence : sequences) {
-                        NeedlemanWunsch needlemanWunsch = new NeedlemanWunsch(targetDnaSequence, dnaSequence);
-                        if (needlemanWunsch.getScore() > maxScore) {
-                            maxScore = needlemanWunsch.getScore();
-                            bestDnaSequence.setHeader(dnaSequence.getHeader());
-                            bestDnaSequence.setSequence(dnaSequence.getSequence());
-                            targetAlignment = needlemanWunsch.getTargetString();
-                            sequenceAlignment = needlemanWunsch.getSeqString();
+            switch (algorithmPicker.getValue()) 
+            {
+                case "Needleman-Wunsch":
+                    {
+                        int maxScore = Integer.MIN_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            NeedlemanWunsch needlemanWunsch = new NeedlemanWunsch(targetDnaSequence, dnaSequence);
+                            if (needlemanWunsch.getScore() > maxScore) {
+                                maxScore = needlemanWunsch.getScore();
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(dnaSequence.getSequence());
+                                targetAlignment = needlemanWunsch.getTargetString();
+                                sequenceAlignment = needlemanWunsch.getSeqString();
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
-            case "Edit Distance":
-                {
-                    double maxSim = -Double.MAX_VALUE;
-                    for (DNASequence dnaSequence : sequences) {
-                        double sim = EditDistance.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
-                        if (sim > maxSim) {
-                            maxSim = sim;
-                            bestDnaSequence.setHeader(dnaSequence.getHeader());
-                            bestDnaSequence.setSequence(dnaSequence.getSequence());
+                case "Edit Distance":
+                    {
+                        double maxSim = -Double.MAX_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            double sim = EditDistance.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
+                            if (sim > maxSim) {
+                                maxSim = sim;
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(dnaSequence.getSequence());
+                            }
                         }
+                        targetAlignment = targetDnaSequence.getSequence();
+                        sequenceAlignment = bestDnaSequence.getSequence();
+                        break;
                     }
-                    targetAlignment = targetDnaSequence.getSequence();
-                    sequenceAlignment = bestDnaSequence.getSequence();
-                    break;
-                }
-            case "Longest Common Subsequence (LCS)":
-                {
-                    double maxSim = -Double.MAX_VALUE;
-                    for (DNASequence dnaSequence : sequences) {
-                        double sim = LCS.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
-                        if (sim > maxSim) {
-                            maxSim = sim;
-                            bestDnaSequence.setHeader(dnaSequence.getHeader());
-                            bestDnaSequence.setSequence(LCS.lcsString(dnaSequence.getSequence(), targetDnaSequence.getSequence()));
+                case "Longest Common Subsequence (LCS)":
+                    {
+                        double maxSim = -Double.MAX_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            double sim = LCS.computeSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
+                            if (sim > maxSim) {
+                                maxSim = sim;
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(LCS.lcsString(dnaSequence.getSequence(), targetDnaSequence.getSequence()));
+                            }
                         }
+                        targetAlignment = targetDnaSequence.getSequence();
+                        sequenceAlignment = bestDnaSequence.getSequence();
+                        break;
                     }
-                    targetAlignment = targetDnaSequence.getSequence();
-                    sequenceAlignment = bestDnaSequence.getSequence();
-                    break;
-                }
-            case "Longest Common Subsequence (LCS) - Normalized":
-                {
-                    double maxSim = -Double.MAX_VALUE;
-                    for (DNASequence dnaSequence : sequences) {
-                        double sim = LCS.normalizedSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
-                        if (sim > maxSim) {
-                            maxSim = sim;
-                            bestDnaSequence.setHeader(dnaSequence.getHeader());
-                            bestDnaSequence.setSequence(LCS.lcsString(dnaSequence.getSequence(), targetDnaSequence.getSequence()));
+                case "Longest Common Subsequence (LCS) - Normalized":
+                    {
+                        double maxSim = -Double.MAX_VALUE;
+                        for (DNASequence dnaSequence : sequences) {
+                            double sim = LCS.normalizedSim(dnaSequence.getSequence(), targetDnaSequence.getSequence());
+                            if (sim > maxSim) {
+                                maxSim = sim;
+                                bestDnaSequence.setHeader(dnaSequence.getHeader());
+                                bestDnaSequence.setSequence(LCS.lcsString(dnaSequence.getSequence(), targetDnaSequence.getSequence()));
+                            }
                         }
+                        targetAlignment = targetDnaSequence.getSequence();
+                        sequenceAlignment = bestDnaSequence.getSequence();
+                        break;
                     }
-                    targetAlignment = targetDnaSequence.getSequence();
-                    sequenceAlignment = bestDnaSequence.getSequence();
+                case "Longest Common Substring":
                     break;
-                }
-            case "Longest Common Substring":
-                break;
-        }
+            }
+            
+            lblResultHeader.setText("Best Match: " + bestDnaSequence.getHeader());
+            targetArea.setText(targetAlignment);
+            sequenceArea.setText(sequenceAlignment);
+            System.out.println("Target File: " + targetFile.getAbsolutePath());
+            System.out.println("Sequences File: " + sequencesFile.getAbsolutePath());
+            System.out.println("Algorithim : " + algorithmPicker.getValue() + "\n");
+            System.out.println("Best Allignment: " + bestDnaSequence.getHeader() + "\n");
+            System.out.println("Target  : " + targetAlignment + "\n");
+            System.out.println("Sequence: " + sequenceAlignment);
+        });
+
+        VBox.setVgrow(resultsBox, Priority.ALWAYS);
+        VBox.setVgrow(targetArea, Priority.ALWAYS);
+        VBox.setVgrow(sequenceArea, Priority.ALWAYS);
+
+
+        VBox root = new VBox(20, header, fileGrid, algoBox, btnRun, statusLabel, resultsBox);
+            root.setAlignment(Pos.TOP_CENTER);
+            root.setPadding(new Insets(25));
+            root.setStyle("-fx-background-color: #0f172a;");
         
-        lblResultHeader.setText("Best Match: " + bestDnaSequence.getHeader());
-        targetArea.setText(targetAlignment);
-        sequenceArea.setText(sequenceAlignment);
-        System.out.println("Target File: " + targetFile.getAbsolutePath());
-        System.out.println("Sequences File: " + sequencesFile.getAbsolutePath());
-        System.out.println("Algorithim : " + algorithmPicker.getValue() + "\n");
-        System.out.println("Best Allignment: " + bestDnaSequence.getHeader() + "\n");
-        System.out.println("Target  : " + targetAlignment + "\n");
-        System.out.println("Sequence: " + sequenceAlignment);
-    });
-
-    VBox.setVgrow(resultsBox, Priority.ALWAYS);
-    VBox.setVgrow(targetArea, Priority.ALWAYS);
-    VBox.setVgrow(sequenceArea, Priority.ALWAYS);
-
-
-    VBox root = new VBox(20, header, fileGrid, algoBox, btnRun, statusLabel, resultsBox);
-        root.setAlignment(Pos.TOP_CENTER);
-        root.setPadding(new Insets(25));
-        root.setStyle("-fx-background-color: #0f172a;");
-    
-    Scene scene = new Scene(root);
-    primStage.setScene(scene);
-    primStage.show();
-}
+        Scene scene = new Scene(root);
+        primStage.setScene(scene);
+        primStage.show();
+    }
 
     
     public static void main(String[] args) {
