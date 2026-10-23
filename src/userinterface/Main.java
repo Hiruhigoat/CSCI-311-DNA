@@ -302,12 +302,6 @@ public class Main extends Application{
             lblResultHeader.setText("Best Match: " + bestDnaSequence.getHeader());
             targetArea.setText(targetAlignment);
             sequenceArea.setText(sequenceAlignment);
-            System.out.println("Target File: " + targetFile.getAbsolutePath());
-            System.out.println("Sequences File: " + sequencesFile.getAbsolutePath());
-            System.out.println("Algorithim : " + algorithmPicker.getValue() + "\n");
-            System.out.println("Best Allignment: " + bestDnaSequence.getHeader() + "\n");
-            System.out.println("Target  : " + targetAlignment + "\n");
-            System.out.println("Sequence: " + sequenceAlignment);
         });
 
         VBox.setVgrow(resultsBox, Priority.ALWAYS);
