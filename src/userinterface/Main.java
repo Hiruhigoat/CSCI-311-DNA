@@ -191,8 +191,12 @@ public class Main extends Application{
         Label lblSeqTitle = new Label("Best Match Sequence Alignment:");
         lblSeqTitle.setStyle("-fx-text-fill: #38bdf8; -fx-font-weight: bold;");
 
+        HBox resultHeaderBox = new HBox(15, lblResultHeader);
+        resultHeaderBox.setAlignment(Pos.CENTER_LEFT);
+
+
         VBox resultsBox = new VBox(8, 
-            lblResultHeader, 
+            resultHeaderBox, 
             lblTargetTitle, 
             targetArea, 
             lblSeqTitle, 
@@ -306,7 +310,6 @@ public class Main extends Application{
         primStage.setScene(scene);
         primStage.show();
     }
-
     
     public static void main(String[] args) {
         launch(args);
