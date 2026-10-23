@@ -35,10 +35,13 @@ Windows:
 ```
 
 Mac:
-Buy another computer and see above
+```
+./run_mac.command
+```
 
 ## Help
 God help you.
+Try downloading jdk 17 then compiling
 
 ## Authors
 -Carlos Stolper
